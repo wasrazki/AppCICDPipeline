@@ -2,6 +2,10 @@ pipeline{
     agent{
         label "jenkins-agent"
     }
+    tools{
+        jdk 'java11'
+        maven 'Maven3'
+    }
     stages{
 
         stage("Cleanup Worksapce"){
