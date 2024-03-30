@@ -22,7 +22,6 @@ pipeline{
             }
             
         }
-
         stage (" Checkout from SCM"){
             steps{
                 
@@ -39,6 +38,13 @@ pipeline{
             steps{
                 sh "mvn test"
             }
+            post {
+               always {
+                    junit 'target/surefire-reports/**/*.xml'
+                }   
+            }
+
+
         } 
 
 
