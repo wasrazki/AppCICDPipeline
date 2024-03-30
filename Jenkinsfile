@@ -13,12 +13,9 @@ pipeline{
 
         stage (" Checkout from SCM"){
             steps{
-                withCredentials([[$class: 'VaultUsernamePasswordCredentialBinding', credentialsId: 'vault-github-access-token', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME']]) {
-                                git branch: 'main' , url: 'https://github.com/wasrazki/AppCICDPipeline'
-
-    
-                    }
-               }
+                
+                git branch: 'main', credentialsId: 'vault-github-access-token', url: 'https://github.com/wasrazki/AppCICDPipeline'
+            }
         } 
 
 
