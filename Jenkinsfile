@@ -33,7 +33,7 @@ pipeline{
         stage("Secret Scanning with Trufflehog"){
             steps{
                 script{
-                    sh 'touch hello.json'
+                    sh 'rm secret-scanning'
                     
                 }
             }
