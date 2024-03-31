@@ -13,6 +13,7 @@ pipeline{
         DOCKER_PASS="vault-dockerhub-access-token"
         IMAGE_NAME="${DOCKER_USER}"+"/"+"${APP_NAME}"
         IMAGE_TAG="${RELEASE}-${BUILD_NUMBER}"
+        Github_access_token= credentials("vault-github-access-token")
     }
     stages{
 
@@ -33,9 +34,7 @@ pipeline{
             steps{
                 script{
                     sh 'rm secret-scanning || true'
-                    sh 'docker pull gesellix/trufflehog'
-                    sh 'docker run -t -e GITHUB_TOKEN=vault-github-access-token gesellix/trufflehog --json https://github.com/wasrazki/AppCICDPipeline.git > secret-scanning'
-                    sh 'sudo cat secret-scanning'
+                    sh 'git clone ${Github_access_token} https://github.com/wasrazki/AppCICDPipeline.git'
                 }
             }
             
@@ -60,7 +59,6 @@ pipeline{
         } 
 
 
+}}
 
-    }
     
-}
