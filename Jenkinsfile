@@ -33,8 +33,8 @@ pipeline{
         stage("Secret Scanning with Trufflehog"){
             steps{
                 script{
-                    sh 'rm secret-scanning || true'
-                    sh 'git clone ${Github_access_token} https://github.com/wasrazki/AppCICDPipeline.git'
+                    sh 'touch hello.json'
+                    
                 }
             }
             
