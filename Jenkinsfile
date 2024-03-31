@@ -33,7 +33,7 @@ pipeline{
         stage("Secret Scanning with Trufflehog"){
             steps{
                 script{
-                    sh 'rm secret-scanning'
+                    sh 'pwd'
                     
                 }
             }
