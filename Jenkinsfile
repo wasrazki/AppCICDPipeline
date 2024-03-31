@@ -33,7 +33,7 @@ pipeline{
             steps{
                 script{
                     sh 'docker pull gesellix/trufflehog'
-                    sh 'docker run -t gesellix/trufflehog --json https://github.com/wasrazki/AppCICDPipeline.git >> secret-scanning'
+                    sh 'docker run -t -e GITHUB_TOKEN=vault-github-access-token gesellix/trufflehog --json https://github.com/wasrazki/AppCICDPipeline.git > secret-scanning'
                 }
             }
             
