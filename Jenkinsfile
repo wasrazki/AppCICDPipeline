@@ -33,8 +33,9 @@ pipeline{
         stage("Secret Scanning with Trufflehog"){
             steps{
                 script{
+                    sh'pwd'
                     sh 'rm secret-scanning || true'
-                    sh 'docker run  gesellix/trufflehog --json . > secret-scanning'
+                    sh 'docker run  gesellix/trufflehog --json ./ > secret-scanning'
                     sh 'sudo cat secret-scanning'
                 }
             }
