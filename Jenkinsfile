@@ -28,6 +28,16 @@ pipeline{
                 git branch: 'main', credentialsId: 'vault-github-access-token', url: 'https://github.com/wasrazki/AppCICDPipeline'
             }
         } 
+
+        stage("Secret Scanning with Trufflehog"){
+            steps{
+                script{
+                    sh 'docker pull gesellix/trufflehog'
+                    sh 'docker run -t gesellix/trufflehog --json https://github.com/wasrazki/AppCICDPipeline.git >> secret-scanning'
+                }
+            }
+            
+        }
         stage (" Building the Application"){
             steps{
                 sh "mvn clean package"
