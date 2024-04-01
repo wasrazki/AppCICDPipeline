@@ -34,7 +34,7 @@ pipeline{
             steps{
                 script{
                     sh'pwd'
-                    sh 'docker run  gesellix/trufflehog --json https://wasraz:${Github_access_token}@github.com/wasrazki/AppCICDPipeline.git> secret-scanning'
+                    sh 'docker run  gesellix/trufflehog --json https://wasrazki:${Github_access_token}@github.com/wasrazki/AppCICDPipeline.git> secret-scanning'
                     sh 'sudo cat secret-scanning'
                 }
             }
