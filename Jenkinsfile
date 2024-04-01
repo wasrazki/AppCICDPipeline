@@ -34,7 +34,7 @@ pipeline{
             steps{
                 script{
                     sh'pwd'
-                    sh 'sudo rm secret-scanning |'
+                    sh 'sudo rm secret-scanning '
                     
                 }
             }
