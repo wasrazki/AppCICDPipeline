@@ -40,7 +40,22 @@ pipeline{
 
         stage("Grype Scanning"){
             steps{
-                sh "grype dir:."
+                sh "grype dir:. > grype-scanning"
+                script{
+                    def report = readFile("grype-scanning")
+                    def htmlreport = """
+                    <html> 
+                    <head> <title> Grype Scanning Report </title> </head> 
+                    <body>
+                        <h1> Grype Scanning Report </h1> 
+                        <pre> ${report}</pre>
+                    </body>
+                    </html>
+                    """
+                    writeFile file: 'target/grype-scanning-report.html', text: htmlreport
+                }
+
+                archiveArtifacts artifacts: 'target/grype-scanning-report.html', allowEmptyArchive: true
             }
         }
 
