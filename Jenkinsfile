@@ -30,7 +30,7 @@ pipeline{
             }
         } 
 
-        }
+        
         stage (" Building the Application"){
             steps{
                 sh "mvn clean package"
@@ -51,6 +51,6 @@ pipeline{
         } 
 
 
-}
+}}
 
     
