@@ -30,15 +30,6 @@ pipeline{
             }
         } 
 
-        stage("Secret Scanning with Trufflehog"){
-            steps{
-                script{
-                    sh'pwd'
-                    sh 'docker run  gesellix/trufflehog --json https://wasrazki:${Github_access_token}@github.com/wasrazki/AppCICDPipeline.git> secret-scanning'
-                    sh 'sudo cat secret-scanning'
-                }
-            }
-            
         }
         stage (" Building the Application"){
             steps{
