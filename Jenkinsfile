@@ -94,6 +94,19 @@ pipeline{
         }
 
 
+        stage (" SonarQube Code Analysis"){
+            steps{
+                script{
+                    withSonarQubeEnv(installationName: 'SonarQube-Scanner' , credentialsId: 'vault-sonarqube-access-token'){
+                        sh 'mvn sonar:sonar'
+                    }
+
+                }
+                
+            }
+        }
+
+
 }}
 
     
