@@ -40,7 +40,7 @@ pipeline{
 
         stage("Grype Scanning"){
             steps{
-                sh "grype dir:. > grype-scanning"
+                sh "grype dir:. --scope AllLayers > grype-scanning"
                 script{
                     def report = readFile("grype-scanning")
                     def htmlreport = """
