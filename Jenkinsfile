@@ -38,6 +38,12 @@ pipeline{
             }
         } 
 
+        stage("Grype Scanning"){
+            steps{
+                sh "grype dir:."
+            }
+        }
+
         stage (" Testing the Application"){
             steps{
                 sh "mvn test"
