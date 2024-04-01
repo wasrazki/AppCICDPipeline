@@ -37,17 +37,17 @@ pipeline{
             }
         } 
 
-        stage("Grype Scanning"){
+        stage("Grype Scanning and Generating an html Report"){
             steps{
                 sh "grype dir:. --scope AllLayers > grype-scanning"
                 script{
-                    def report = readFile("grype-scanning")
+                    def report-grype = readFile("grype-scanning")
                     def htmlreport = """
                     <html> 
                     <head> <title> Grype Scanning Report </title> </head> 
                     <body>
                         <h1> Grype Scanning Report </h1> 
-                        <pre> ${report}</pre>
+                        <pre> ${report-grype}</pre>
                     </body>
                     </html>
                     """
@@ -70,6 +70,28 @@ pipeline{
 
 
         } 
+
+        stage ("Trivy Scanning and generating an html Report"){
+            steps{
+                sh 'trivy filesystem . > trivy-scan'
+                script{
+                    def report-trivy = readFile("trivy-scan")
+                    def htmlreport = """
+                    <html> 
+                    <head> <title> Trivy Scanning Report </title> </head> 
+                    <body>
+                        <h1> Trivy Scanning Report </h1> 
+                        <pre> ${report-trivy}</pre>
+                    </body>
+                    </html>
+                    """
+                    writeFile file: 'target/trivy-scanning-report.html', text: htmlreport
+                }
+
+                archiveArtifacts artifacts: 'target/trivy-scanning-report.html', allowEmptyArchive: true
+
+            }
+        }
 
 
 }}
