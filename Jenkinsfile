@@ -37,7 +37,7 @@ pipeline{
             }
         } 
 
-        stage("Grype Scanning and Generating an html Report"){
+        stage("Grype Scanning and Report Generating"){
             steps{
                 sh "grype dir:. --scope AllLayers > grype-scanning"
                 script{
@@ -71,7 +71,7 @@ pipeline{
 
         } 
 
-        stage ("Trivy Scanning and generating an html Report"){
+        stage ("Trivy Scanning and Report Generating"){
             steps{
                 sh 'trivy filesystem . > trivy-scan'
                 script{
