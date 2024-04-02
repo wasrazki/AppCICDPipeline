@@ -106,6 +106,12 @@ pipeline{
             }
         }
 
+        stage (" Quality GATE"){
+            steps{
+                waitForQualityGate abortPipeline: false , credentialsId: 'vault-sonarqube-access-token' // abortPipeline: true ==> in order to abort the pipeline if the code analysis didn't succed
+            }
+        } 
+
 
 }}
 
