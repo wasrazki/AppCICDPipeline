@@ -10,7 +10,7 @@ pipeline{
         APP_NAME= "MyCICDPipeline"
         RELEASE= "1.0.0"
         DOCKER_USER= "wasraz"
-        DOCKER_PASS= credentials("vault-dockerhub-access-token")
+        DOCKER_PASS= "vault-dockerhub-access-token"
         IMAGE_NAME= "${DOCKER_USER}"+"/"+"${APP_NAME}"
         IMAGE_TAG= "${RELEASE}-${BUILD_NUMBER}"
         
