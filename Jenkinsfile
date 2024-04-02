@@ -37,6 +37,19 @@ pipeline{
             }
         } 
 
+        stage (" Unit Testing "){
+            steps{
+                sh "mvn test"
+            }
+            post {
+               always {
+                    junit 'target/surefire-reports/**/*.xml'
+                }   
+            }
+
+
+        } 
+
 
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps {
@@ -71,18 +84,7 @@ pipeline{
             }
         }
 
-        stage (" Unit Testing "){
-            steps{
-                sh "mvn test"
-            }
-            post {
-               always {
-                    junit 'target/surefire-reports/**/*.xml'
-                }   
-            }
-
-
-        } 
+        
 
         stage ("Trivy Scanning and Report Generating"){
             steps{
