@@ -7,7 +7,7 @@ pipeline{
         maven 'Maven3'
     }
     environment{
-        APP_NAME= "MyCICDPipeline"
+        APP_NAME= "appcicdpipeline"
         RELEASE= "1.0.0"
         DOCKER_USER= "wasraz"
         DOCKER_PASS= "vault-dockerhub-access-token"
