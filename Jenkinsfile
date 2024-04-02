@@ -37,6 +37,19 @@ pipeline{
             }
         } 
 
+
+        stage('OWASP Dependency-Check Vulnerabilities') {
+            steps {
+                dependencyCheck additionalArguments: ''' 
+                            -o './'
+                            -s './'
+                            -f 'ALL' 
+                            --prettyPrint''', odcInstallation: 'Dependency-Check'
+                
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+            }
+    }
+
         stage("Grype Scanning and Report Generating"){
             steps{
                 sh "grype dir:. --scope AllLayers > grype-scanning"
