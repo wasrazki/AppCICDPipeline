@@ -148,6 +148,29 @@ pipeline{
             }
         }
 
+        stage (" Docker Image Scanning with TRIVY"){
+            steps{
+                script{
+                    sh "trivy image --no-progress --exit-code 0 --severity HIGH,CRITICAL ${IMAGE_NAME}:${IMAGE_TAG} > trivy-image-scan"
+                    // houni normalement --exit-code  lazem tkoun 1 khater itha ken l9it high wala critical vulnerabilities in my docker image lazem n aborti el pipeline maadch n9adem.
+                    def report = readFile("trivy-image-scan")
+                    def htmlreport = """
+                    <html> 
+                    <head> <title> Trivy Image Scanning Report </title> </head> 
+                    <body>
+                        <h1> Trivy Scanning Report </h1> 
+                        <pre> ${report}</pre>
+                    </body>
+                    </html>
+                    """
+                    writeFile file: 'target/trivy-image-scanning-report.html', text: htmlreport
+
+                }
+                archiveArtifacts artifacts: 'target/trivy-image-scanning-report.html', allowEmptyArchive: true
+
+            }
+        } 
+
 
 }}
 
