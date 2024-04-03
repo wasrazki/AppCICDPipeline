@@ -6,8 +6,8 @@ RUN mvn clean install
 
 FROM eclipse-temurin:11.0.16_8-jdk-alpine 
 WORKDIR /app 
-COPY --from=build /app/target/demoapp.jar /app/ 
+COPY --from=build /app/app.jar /app/ 
 EXPOSE 8080 
-CMD ["java", "-jar", "demoapp.jar"]
+CMD ["java", "-jar", "app.jar"]
 
 
