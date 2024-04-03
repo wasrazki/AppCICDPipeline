@@ -148,7 +148,7 @@ pipeline{
             }
         }
 
-        stage (" Docker Image Scanning with TRIVY"){
+        stage (" Docker Image Scanning with TRIVY and Report Generating"){
             steps{
                 script{
                     sh "trivy image --no-progress --exit-code 0 --severity HIGH,CRITICAL ${IMAGE_NAME}:${IMAGE_TAG} > trivy-image-scan"
