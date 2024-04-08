@@ -13,7 +13,7 @@ pipeline{
         DOCKER_PASS= "vault-dockerhub-access-token"
         IMAGE_NAME= "${DOCKER_USER}"+"/"+"${APP_NAME}"
         IMAGE_TAG= "${RELEASE}-${BUILD_NUMBER}"
-        Grype_Cloud_Uploading ="vault-grype-cloud-uploading"
+        Grype_Cloud_Uploading = credentials("vault-grype-cloud-uploading")
         
     }
     stages{
