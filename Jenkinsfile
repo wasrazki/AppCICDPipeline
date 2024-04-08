@@ -15,7 +15,7 @@ pipeline{
         IMAGE_TAG= "${RELEASE}-${BUILD_NUMBER}"
         Grype_Cloud_Uploading = credentials("vault-grype-cloud-uploading")
         Trivy_Cloud_Uploading = credentials("vault-trivy-cloud-uploading")
-        
+        Trivy_Image_Cloud_Uploading = credentials("vault-docker-image-trivy-cloud-uploading")
     }
     stages{
 
@@ -157,7 +157,7 @@ pipeline{
             }
         }
 
-        stage (" Docker Image Scanning with TRIVY and Report Generating"){
+        stage (" Docker Image Scanning with TRIVY and Report Uploading to the Cloud"){
             steps{
                 script{
                     sh "trivy image --no-progress --exit-code 0 --severity HIGH,CRITICAL ${IMAGE_NAME}:${IMAGE_TAG} > trivy-image-scan"
@@ -167,12 +167,13 @@ pipeline{
                     <html> 
                     <head> <title> Trivy Image Scanning Report </title> </head> 
                     <body>
-                        <h1> Trivy Scanning Report </h1> 
+                        <h1> Trivy Scanning Report:  Build ${BUILD_NUMBER} </h1> 
                         <pre> ${report}</pre>
                     </body>
                     </html>
                     """
                     writeFile file: 'target/trivy-image-scanning-report.html', text: htmlreport
+                    sh "azcopy copy 'target/trivy-image-scanning-report.html'  '${Trivy_Image_Cloud_Uploading}' "
 
                 }
                 archiveArtifacts artifacts: 'target/trivy-image-scanning-report.html', allowEmptyArchive: true
