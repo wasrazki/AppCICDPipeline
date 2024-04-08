@@ -64,7 +64,7 @@ pipeline{
             }
     }
 
-        stage("Grype Scanning and Report Generating"){
+        stage("Grype Scanning and Report Uploading to the cloud"){
             steps{
                 sh "grype dir:. --scope AllLayers > grype-scanning"
                 script{
@@ -79,9 +79,13 @@ pipeline{
                     </html>
                     """
                     writeFile file: 'target/grype-scanning-report.html', text: htmlreport
+                    sh "azcopy copy 'target/grype-scanning-report.html'  'https://reportdatabase.blob.core.windows.net/grype-scanning-reports?sp=racw&st=2024-04-08T09:01:25Z&se=2024-06-08T17:01:25Z&sv=2022-11-02&sr=c&sig=%2BTuLX8Fmv1TEtbridljDxu0jiGBxig1apaxRoixYjFQ%3D'  "   
+
                 }
 
                 archiveArtifacts artifacts: 'target/grype-scanning-report.html', allowEmptyArchive: true
+
+                
             }
         }
 
