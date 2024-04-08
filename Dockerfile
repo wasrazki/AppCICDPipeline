@@ -12,7 +12,9 @@ COPY --from=build /app .
 RUN trivy image --severity HIGH,CRITICAL .
 FROM eclipse-temurin:11.0.16_8-jdk-alpine 
 WORKDIR /app 
-COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar . 
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar .  
+RUN adduser -D myuser
+USER myuser
 EXPOSE 8080 
 CMD ["java", "-jar", "demo-0.0.1-SNAPSHOT.jar"]
 
