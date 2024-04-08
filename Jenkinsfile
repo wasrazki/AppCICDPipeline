@@ -72,19 +72,21 @@ pipeline{
                     def report= readFile("grype-scanning")
                     def htmlreport = """
                     <html> 
-                    <head> <title> Grype Scanning Report </title> </head> 
+                    <head> <title> Grype Scanning Report: Build ${BUILD_NUMBER} </title> </head> 
                     <body>
                         <h1> Grype Scanning Report </h1> 
                         <pre> ${report}</pre>
                     </body>
                     </html>
                     """
-                    writeFile file: 'target/grype-scanning-report-${BUILD_NUMBER}.html', text: htmlreport
-                    sh "azcopy copy 'target/grype-scanning-report-${BUILD_NUMBER}.html'  '${Grype_Cloud_Uploading}'  "   
+                    writeFile file: 'target/grype-scanning-report.html', text: htmlreport
+                    sh "azcopy copy 'target/grype-scanning-report.html'  '${Grype_Cloud_Uploading}'  " 
+                      
 
                 }
 
-                archiveArtifacts artifacts: 'target/grype-scanning-report-${BUILD_NUMBER}.html', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'target/grype-scanning-report.html', allowEmptyArchive: true
+                
 
                 
             }
