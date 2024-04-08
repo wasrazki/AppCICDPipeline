@@ -13,6 +13,7 @@ pipeline{
         DOCKER_PASS= "vault-dockerhub-access-token"
         IMAGE_NAME= "${DOCKER_USER}"+"/"+"${APP_NAME}"
         IMAGE_TAG= "${RELEASE}-${BUILD_NUMBER}"
+        Grype_Cloud_Uploading ="vault-grype-cloud-uploading"
         
     }
     stages{
@@ -78,12 +79,12 @@ pipeline{
                     </body>
                     </html>
                     """
-                    writeFile file: 'target/grype-scanning-report.html', text: htmlreport
-                    sh "azcopy copy 'target/grype-scanning-report.html'  'https://reportdatabase.blob.core.windows.net/grype-scanning-reports?sp=racw&st=2024-04-08T09:01:25Z&se=2024-06-08T17:01:25Z&sv=2022-11-02&sr=c&sig=%2BTuLX8Fmv1TEtbridljDxu0jiGBxig1apaxRoixYjFQ%3D'  "   
+                    writeFile file: 'target/grype-scanning-report-${BUILD_NUMBER}.html', text: htmlreport
+                    sh "azcopy copy 'target/grype-scanning-report-${BUILD_NUMBER}.html'  '${Grype_Cloud_Uploading}'  "   
 
                 }
 
-                archiveArtifacts artifacts: 'target/grype-scanning-report.html', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'target/grype-scanning-report-${BUILD_NUMBER}.html', allowEmptyArchive: true
 
                 
             }
