@@ -14,6 +14,7 @@ pipeline{
         IMAGE_NAME= "${DOCKER_USER}"+"/"+"${APP_NAME}"
         IMAGE_TAG= "${RELEASE}-${BUILD_NUMBER}"
         Grype_Cloud_Uploading = credentials("vault-grype-cloud-uploading")
+        Trivy_Cloud_Uploading = credentials("vault-trivy-cloud-uploading")
         
     }
     stages{
@@ -72,9 +73,9 @@ pipeline{
                     def report= readFile("grype-scanning")
                     def htmlreport = """
                     <html> 
-                    <head> <title> Grype Scanning Report: Build ${BUILD_NUMBER} </title> </head> 
+                    <head> <title> Grype Scanning Report </title> </head> 
                     <body>
-                        <h1> Grype Scanning Report </h1> 
+                        <h1> Grype Scanning Report: Build ${BUILD_NUMBER} </h1> 
                         <pre> ${report}</pre>
                     </body>
                     </html>
@@ -94,7 +95,7 @@ pipeline{
 
         
 
-        stage ("Trivy Scanning and Report Generating"){
+        stage ("Trivy Scanning and Report Uploading to the cloud"){
             steps{
                 sh 'trivy filesystem . > trivy-scan'
                 script{
@@ -103,12 +104,13 @@ pipeline{
                     <html> 
                     <head> <title> Trivy Scanning Report </title> </head> 
                     <body>
-                        <h1> Trivy Scanning Report </h1> 
+                        <h1> Trivy Scanning Report: Build ${BUILD_NUMBER}   </h1> 
                         <pre> ${report}</pre>
                     </body>
                     </html>
                     """
                     writeFile file: 'target/trivy-scanning-report.html', text: htmlreport
+                    sh "azcopy copy 'target/trivy-scanning-report.html'   '${Trivy_Cloud_Uploading}'  "
                 }
 
                 archiveArtifacts artifacts: 'target/trivy-scanning-report.html', allowEmptyArchive: true
