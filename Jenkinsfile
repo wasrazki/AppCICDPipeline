@@ -16,6 +16,9 @@ pipeline{
         Grype_Cloud_Uploading = credentials("vault-grype-cloud-uploading")
         Trivy_Cloud_Uploading = credentials("vault-trivy-cloud-uploading")
         Trivy_Image_Cloud_Uploading = credentials("vault-docker-image-trivy-cloud-uploading")
+        Jenkins_Username = credentials("vault-jenkins-username")
+        Jenkins_API_access_token = credentials("vault-jenkins-access-token")
+        Jenkins_Controller = credentials ("vault-jenkins-controller")
     }
     stages{
 
@@ -183,10 +186,10 @@ pipeline{
 
 
 
-        stage("Cleanup Worksapce"){
+        stage("Trigger the CD Pipeline "){
             steps{
                 script{
-                    sh "curl -v -k --user admin:${Jenkins_API_access_token} -X POST -H 'cache-control:no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'http://20.102.106.35:8080/job/gitops-mycompletepipeline/buildWithParameters?token=gitops-pipeline-token' " 
+                    sh "curl -v -k --user ${Jenkins_Username}:${vault-jenkins-access-token} -X POST -H 'cache-control:no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'https://${Jenkins_Controller}/job/gitops-AppCICIPipeline/buildWithParameters?token=gitops-pipeline-token' " 
                     
                 }
             }
