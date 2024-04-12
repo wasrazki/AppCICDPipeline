@@ -189,7 +189,7 @@ pipeline{
         stage("Trigger the CD Pipeline "){
             steps{
                 script{
-                    sh "curl -v -k --user ${Jenkins_Username}:${vault-jenkins-access-token} -X POST -H 'cache-control:no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'https://${Jenkins_Controller}/job/gitops-AppCICIPipeline/buildWithParameters?token=gitops-pipeline-token' " 
+                    sh "curl -v -k --user ${Jenkins_Username}:${Jenkins_API_access_token} -X POST -H 'cache-control:no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'https://${Jenkins_Controller}/job/gitops-AppCICIPipeline/buildWithParameters?token=gitops-pipeline-token' " 
                     
                 }
             }
